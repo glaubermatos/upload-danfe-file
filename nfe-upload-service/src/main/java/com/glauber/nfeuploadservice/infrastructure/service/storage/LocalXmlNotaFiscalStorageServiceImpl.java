@@ -1,5 +1,6 @@
 package com.glauber.nfeuploadservice.infrastructure.service.storage;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -30,7 +31,15 @@ public class LocalXmlNotaFiscalStorageServiceImpl implements NotaFiscalStorageSe
 	}
 	
 	private Path getFilePath(String xmlFileName) {
-		return Path.of(storageProperties.getLocal().getXmlInputDirectory().concat("/" + xmlFileName));
+		try {
+			String inputDirectoryName = storageProperties.getLocal().getXmlInputDirectory();
+			
+			Path pathInputDirectory = Path.of(inputDirectoryName);
+			
+			return pathInputDirectory.resolve(xmlFileName);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 }

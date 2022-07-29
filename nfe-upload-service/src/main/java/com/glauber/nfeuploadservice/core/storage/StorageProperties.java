@@ -1,5 +1,9 @@
 package com.glauber.nfeuploadservice.core.storage;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -7,7 +11,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
-import com.glauber.nfeuploadservice.core.validation.StorageTypeLocalNotEmptyXmlInputDirectory;
+//import com.glauber.nfeuploadservice.core.validation.StorageTypeLocalNotEmptyXmlInputDirectory;
 
 @Validated 
 //@StorageTypeLocalNotEmptyXmlInputDirectory(type = "type", xmlInputDirectory = "xmlInputDirectory", message = "StorageType.LOCAL requer preenchimento da propriedade xmlInputDirectory")
@@ -43,7 +47,10 @@ public class StorageProperties {
 		@NotNull
 		private String xmlInputDirectory;
 
-		public String getXmlInputDirectory() {
+		public String getXmlInputDirectory() throws IOException {
+			Path pathInputDirectory = Path.of(this.xmlInputDirectory);
+			Files.createDirectories(pathInputDirectory);
+			
 			return xmlInputDirectory;
 		}
 		public void setXmlInputDirectory(String xmlInputDirectory) {

@@ -9,11 +9,13 @@ import org.springframework.http.MediaType;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.glauber.nfeuploadservice.core.validation.FileContentType;
+import com.glauber.nfeuploadservice.core.validation.XmlSchema;
 
 public class NotaFiscalInput {
 
 	@NotNull
 	//TODO: criar validação customizada para limitar o tamanho do arquivo
+	@XmlSchema
 	@FileContentType(allowed = {MediaType.APPLICATION_XML_VALUE})
 	private MultipartFile xmlNotaFiscal;
 
