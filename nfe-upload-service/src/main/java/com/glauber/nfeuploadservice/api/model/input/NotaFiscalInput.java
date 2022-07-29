@@ -3,10 +3,18 @@ package com.glauber.nfeuploadservice.api.model.input;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.validation.constraints.NotNull;
+
+import org.springframework.http.MediaType;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.glauber.nfeuploadservice.core.validation.FileContentType;
 
 public class NotaFiscalInput {
 
+	@NotNull
+	//TODO: criar validação customizada para limitar o tamanho do arquivo
+	@FileContentType(allowed = {MediaType.APPLICATION_XML_VALUE})
 	private MultipartFile xmlNotaFiscal;
 
 	public MultipartFile getXmlNotaFiscal() {
