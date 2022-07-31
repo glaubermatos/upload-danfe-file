@@ -25,9 +25,10 @@ public class LocalXmlNotaFiscalStorageServiceImpl implements NotaFiscalStorageSe
 			
 			FileCopyUtils.copy(xmlInputStream, Files.newOutputStream(newXmlFilePath));
 			
-		} catch (Exception e) {
-			throw new RuntimeException(e);
+		} catch (IOException e) {
+			throw new StorageException("Não foi possível armazenar arquivo", e);
 		}
+			
 	}
 	
 	private Path getFilePath(String xmlFileName) {
@@ -38,7 +39,7 @@ public class LocalXmlNotaFiscalStorageServiceImpl implements NotaFiscalStorageSe
 			
 			return pathInputDirectory.resolve(xmlFileName);
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new StorageException("Não foi possível encontrar o diretório", e);
 		}
 	}
 

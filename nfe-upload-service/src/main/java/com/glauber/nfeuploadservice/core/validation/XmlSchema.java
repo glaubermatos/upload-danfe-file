@@ -22,7 +22,7 @@ import com.glauber.nfeuploadservice.core.validation.validator.XmlSchemaValidator
 @Constraint(validatedBy = {XmlSchemaValidator.class})
 public @interface XmlSchema {
 	
-	String message() default "Arquivo xml da Nota Fiscal inválido";
+	String message() default "Arquivo xml da Nota Fiscal inválido, Aceita apenas NFe compatível com leiauteNFe_v4.00.xsd";
 
 	Class<?>[] groups() default { };
 

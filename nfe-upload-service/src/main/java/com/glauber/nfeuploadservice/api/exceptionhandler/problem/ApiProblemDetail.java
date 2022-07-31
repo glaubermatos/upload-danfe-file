@@ -1,9 +1,12 @@
 package com.glauber.nfeuploadservice.api.exceptionhandler.problem;
 
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+@JsonInclude(value = Include.NON_NULL)
 public class ApiProblemDetail {
 	
 		private Integer status;
@@ -11,7 +14,7 @@ public class ApiProblemDetail {
 		private String detail;
 		private OffsetDateTime timestamp;
 		private String userMessage;
-		private List<Field> fields = new ArrayList<>();		
+		private List<Field> fields;		
 		
 		public Integer getStatus() {
 			return status;

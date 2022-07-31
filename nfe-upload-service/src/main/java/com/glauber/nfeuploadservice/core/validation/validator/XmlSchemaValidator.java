@@ -23,7 +23,10 @@ public class XmlSchemaValidator implements ConstraintValidator<XmlSchema, Multip
 		
 		try {
 			SchemaFactory schemaFactory = SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
-			String xsdProcNfe = "src/main/resources/xsd/procNFe_v4.00.xsd";			
+			
+			//TODO: implementar outras versões de validadores de notas fiscais - no momento valida apenas notas usando o schema na versão 4.0
+			String xsdProcNfe = "src/main/resources/xsd/procNFe_v4.00.xsd";		
+			
 			File xsdSchemaFile = Path.of(xsdProcNfe).toFile();
 			
 			Schema schema = schemaFactory.newSchema(xsdSchemaFile);

@@ -13,7 +13,8 @@ import org.springframework.validation.annotation.Validated;
 
 //import com.glauber.nfeuploadservice.core.validation.StorageTypeLocalNotEmptyXmlInputDirectory;
 
-@Validated 
+@Validated
+//TODO: Remover ou concluir validação
 //@StorageTypeLocalNotEmptyXmlInputDirectory(type = "type", xmlInputDirectory = "xmlInputDirectory", message = "StorageType.LOCAL requer preenchimento da propriedade xmlInputDirectory")
 @Component
 @ConfigurationProperties(prefix = "nfe-upload-service.storage")
