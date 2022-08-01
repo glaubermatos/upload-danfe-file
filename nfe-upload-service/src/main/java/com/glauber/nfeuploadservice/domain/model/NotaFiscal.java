@@ -4,38 +4,15 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
-@Entity
 public class NotaFiscal {
 
-	@Id
-	@GeneratedValue(strategy =  GenerationType.IDENTITY)
 	private Integer id;
-	
-	@Column(nullable = false)
+	private String nomeArquivo;
 	private int numero;
-	
-	@Column(nullable = false)
 	private LocalDateTime dhRegistro;
-	
-	@Column(nullable = false)
 	private String nomeEmitente;
-	
-	@Column(nullable = false)
 	private String nomeDestinatario;
-	
-	@Column(nullable = false)
 	private BigDecimal valorNota;
-	
-	@Column(nullable = false)
-	@Enumerated(EnumType.STRING)
 	private StatusProcessamento status = StatusProcessamento.AGUARDANDO_PROCESSAMENTO;
 	
 	public Integer getId() {
@@ -43,6 +20,12 @@ public class NotaFiscal {
 	}
 	public void setId(Integer id) {
 		this.id = id;
+	}
+	public String getNomeArquivo() {
+		return nomeArquivo;
+	}
+	public void setNomeArquivo(String nomeArquivo) {
+		this.nomeArquivo = nomeArquivo;
 	}
 	public int getNumero() {
 		return numero;
@@ -99,8 +82,8 @@ public class NotaFiscal {
 	
 	@Override
 	public String toString() {
-		return String.format("numero: %d, dhRegistro: %s, nomeEmitente: %s, nomeDestinatario: %s, valorNota: %s", 
-				numero, dhRegistro, nomeEmitente, nomeDestinatario, valorNota);
+		return String.format("nomeArquivo: %s, numero: %d, dhRegistro: %s, nomeEmitente: %s, nomeDestinatario: %s, valorNota: %s", 
+				nomeArquivo, numero, dhRegistro, nomeEmitente, nomeDestinatario, valorNota);
 	}
 	
 }

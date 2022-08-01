@@ -1,4 +1,4 @@
-package com.glauber.nfeuploadservice.domain.exception;
+package com.glauber.nfeprocessservice.domain.exception;
 
 public class NotaFiscalNaoEncontradaException extends EntidadeNaoEncontradaException {
 

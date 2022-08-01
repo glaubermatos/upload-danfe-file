@@ -1,4 +1,4 @@
-package com.glauber.nfeuploadservice.core.jackson;
+package com.glauber.nfeprocessservice.core.jackson;
 
 import java.io.IOException;
 

@@ -1,4 +1,4 @@
-package com.glauber.nfeuploadservice.core.storage;
+package com.glauber.nfeprocessservice.core.storage;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -13,7 +13,7 @@ import org.springframework.validation.annotation.Validated;
 
 @Validated
 @Component
-@ConfigurationProperties(prefix = "nfe-upload-service.storage")
+@ConfigurationProperties(prefix = "nfe-process-service.storage")
 public class StorageProperties {
 	
 	private StorageType type = StorageType.LOCAL;
@@ -43,6 +43,12 @@ public class StorageProperties {
 		
 		@NotNull
 		private String xmlInputDirectory;
+		
+		@NotNull
+		private String xmlOutputDirectory;
+		
+		@NotNull
+		private String xmlErroDirectory;
 
 		public String getXmlInputDirectory() throws IOException {
 			Path pathInputDirectory = Path.of(this.xmlInputDirectory);
@@ -50,8 +56,29 @@ public class StorageProperties {
 			
 			return xmlInputDirectory;
 		}
+		
+		public String getXmlOutputDirectory() throws IOException {
+			Path pathOutputDirectory = Path.of(this.xmlOutputDirectory);
+			Files.createDirectories(pathOutputDirectory);
+			
+			return xmlOutputDirectory;
+		}
+		
+		public String getXmlErrorDirectory() throws IOException {
+			Path pathErroDirectory = Path.of(this.xmlErroDirectory);
+			Files.createDirectories(pathErroDirectory);
+			
+			return xmlErroDirectory;
+		}
+		
 		public void setXmlInputDirectory(String xmlInputDirectory) {
 			this.xmlInputDirectory = xmlInputDirectory;
+		}
+		public void setXmlOutputDirectory(String xmlOutputDirectory) {
+			this.xmlOutputDirectory = xmlOutputDirectory;
+		}
+		public void setXmlErroDirectory(String xmlErroDirectory) {
+			this.xmlErroDirectory = xmlErroDirectory;
 		}
 		
 	}

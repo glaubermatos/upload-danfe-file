@@ -24,6 +24,7 @@ public class NotaFiscalInputDisassembler {
 		String xmlNotaFiscalString = StreamUtils.copyToString(stream, Charset.forName("UTF-8"));
 		
 		NotaFiscal notaFiscal = xmlToDomainObjectService.parce(xmlNotaFiscalString);
+		notaFiscal.setNomeArquivo(notaFiscalInput.getFileName());
 		
 		return notaFiscal;
 	}

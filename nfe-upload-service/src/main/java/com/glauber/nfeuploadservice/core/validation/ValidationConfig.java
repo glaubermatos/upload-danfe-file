@@ -8,6 +8,7 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 @Configuration
 public class ValidationConfig {
 
+	//messageSource
 	@Bean
 	public LocalValidatorFactoryBean validator(MessageSource messageSource) {
 		LocalValidatorFactoryBean validatorBean = new LocalValidatorFactoryBean();
