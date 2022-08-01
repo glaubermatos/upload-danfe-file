@@ -2,8 +2,11 @@ package com.glauber.nfeprocessservice.domain.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -11,7 +14,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.transaction.Transactional;
+import javax.persistence.OneToMany;
 
 import org.springframework.data.domain.AbstractAggregateRoot;
 
@@ -20,7 +23,7 @@ import com.glauber.nfeprocessservice.domain.event.NotaFiscalFalhouEvent;
 import com.glauber.nfeprocessservice.domain.event.NotaFiscalProcessadaEvent;
 
 @Entity
-public class NotaFiscal extends AbstractAggregateRoot<NotaFiscal> {
+public class NotaFiscal extends AbstractAggregateRoot<NotaFiscal>  {
 
 	@Id
 	@GeneratedValue(strategy =  GenerationType.IDENTITY)
@@ -29,24 +32,22 @@ public class NotaFiscal extends AbstractAggregateRoot<NotaFiscal> {
 	@Column(nullable = false)
 	private String nomeArquivo;
 	
-	@Column(nullable = false)
 	private int numero;
 	
-	@Column(nullable = false)
 	private LocalDateTime dhRegistro;
 	
-	@Column(nullable = false)
 	private String nomeEmitente;
 	
-	@Column(nullable = false)
 	private String nomeDestinatario;
 	
-	@Column(nullable = false)
 	private BigDecimal valorNota;
 	
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private StatusProcessamento status = StatusProcessamento.AGUARDANDO_PROCESSAMENTO;
+	
+	@OneToMany(mappedBy = "notaFiscal", cascade = CascadeType.ALL)
+	private Set<NotaFiscalDuplicata> duplicatas = new HashSet<>();
 	
 	public Integer getId() {
 		return id;
@@ -96,6 +97,12 @@ public class NotaFiscal extends AbstractAggregateRoot<NotaFiscal> {
 	public void setStatus(StatusProcessamento status) {
 		this.status = status;
 	}
+	public Set<NotaFiscalDuplicata> getDuplicatas() {
+		return duplicatas;
+	}
+	public void setDuplicatas(Set<NotaFiscalDuplicata> duplicatas) {
+		this.duplicatas = duplicatas;
+	}
 	
 	@Override
 	public int hashCode() {
@@ -125,14 +132,12 @@ public class NotaFiscal extends AbstractAggregateRoot<NotaFiscal> {
 		registerEvent(new NotaFiscalEmProcessamentoEvent(this));
 	}
 
-//	@Transactional
 	public void processada() {
 		setStatus(StatusProcessamento.PROCESSADA);
 		
-//		registerEvent(new NotaFiscalProcessadaEvent(this));
+		registerEvent(new NotaFiscalProcessadaEvent(this));
 	}
 
-	@Transactional
 	public void falhou() {
 		setStatus(StatusProcessamento.PROCESSADA_COM_ERRO);
 		

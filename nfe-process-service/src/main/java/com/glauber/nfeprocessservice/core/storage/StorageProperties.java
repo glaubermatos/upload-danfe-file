@@ -48,7 +48,7 @@ public class StorageProperties {
 		private String xmlOutputDirectory;
 		
 		@NotNull
-		private String xmlErroDirectory;
+		private String xmlErrorDirectory;
 
 		public String getXmlInputDirectory() throws IOException {
 			Path pathInputDirectory = Path.of(this.xmlInputDirectory);
@@ -65,10 +65,10 @@ public class StorageProperties {
 		}
 		
 		public String getXmlErrorDirectory() throws IOException {
-			Path pathErroDirectory = Path.of(this.xmlErroDirectory);
-			Files.createDirectories(pathErroDirectory);
+			Path pathErrorDirectory = Path.of(this.xmlErrorDirectory);
+			Files.createDirectories(pathErrorDirectory);
 			
-			return xmlErroDirectory;
+			return xmlErrorDirectory;
 		}
 		
 		public void setXmlInputDirectory(String xmlInputDirectory) {
@@ -77,8 +77,8 @@ public class StorageProperties {
 		public void setXmlOutputDirectory(String xmlOutputDirectory) {
 			this.xmlOutputDirectory = xmlOutputDirectory;
 		}
-		public void setXmlErroDirectory(String xmlErroDirectory) {
-			this.xmlErroDirectory = xmlErroDirectory;
+		public void setXmlErrorDirectory(String xmlErrorDirectory) {
+			this.xmlErrorDirectory = xmlErrorDirectory;
 		}
 		
 	}

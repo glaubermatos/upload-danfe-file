@@ -2,11 +2,11 @@ package com.glauber.nfeuploadservice.domain.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Objects;
+import java.util.HashSet;
+import java.util.Set;
 
 public class NotaFiscal {
 
-	private Integer id;
 	private String nomeArquivo;
 	private int numero;
 	private LocalDateTime dhRegistro;
@@ -14,13 +14,8 @@ public class NotaFiscal {
 	private String nomeDestinatario;
 	private BigDecimal valorNota;
 	private StatusProcessamento status = StatusProcessamento.AGUARDANDO_PROCESSAMENTO;
+	Set<NotaFiscalDuplicata> duplicatas = new HashSet<>();
 	
-	public Integer getId() {
-		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
-	}
 	public String getNomeArquivo() {
 		return nomeArquivo;
 	}
@@ -63,27 +58,17 @@ public class NotaFiscal {
 	public void setStatus(StatusProcessamento status) {
 		this.status = status;
 	}
-	
-	@Override
-	public int hashCode() {
-		return Objects.hash(id);
+	public Set<NotaFiscalDuplicata> getDuplicatas() {
+		return duplicatas;
 	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		NotaFiscal other = (NotaFiscal) obj;
-		return Objects.equals(id, other.id);
+	public void setDuplicatas(Set<NotaFiscalDuplicata> duplicatas) {
+		this.duplicatas = duplicatas;
 	}
 	
 	@Override
 	public String toString() {
-		return String.format("nomeArquivo: %s, numero: %d, dhRegistro: %s, nomeEmitente: %s, nomeDestinatario: %s, valorNota: %s", 
-				nomeArquivo, numero, dhRegistro, nomeEmitente, nomeDestinatario, valorNota);
+		return String.format("nomeArquivo: %s, numero: %d, dhRegistro: %s, nomeEmitente: %s, nomeDestinatario: %s, valorNota: %s, duplicatas: %d", 
+				nomeArquivo, numero, dhRegistro, nomeEmitente, nomeDestinatario, valorNota, duplicatas.size());
 	}
 	
 }

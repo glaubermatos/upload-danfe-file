@@ -7,7 +7,6 @@ public class NotaFiscalProcessadaEvent {
 	private NotaFiscal notaFiscal;
 	
 	public NotaFiscalProcessadaEvent(NotaFiscal notaFiscal) {
-		System.out.println("==================> INSTANCIOU -> NotaFiscalProcessadaEvent");
 		this.notaFiscal = notaFiscal;
 	}
 

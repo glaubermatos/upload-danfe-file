@@ -22,7 +22,7 @@ public class NotaFiscalUploadedEventListener {
 	@Autowired
 	private Queue queue;
 
-	@EventListener(condition = "#event.temNumero()")
+	@EventListener
 	public void whenNotaFiscalUploaded(NotaFiscalUploadedEvent event) {
 		NotaFiscalUploadedModelEvent modelEvent = new NotaFiscalUploadedModelEvent(event.getNotaFiscal());
 		

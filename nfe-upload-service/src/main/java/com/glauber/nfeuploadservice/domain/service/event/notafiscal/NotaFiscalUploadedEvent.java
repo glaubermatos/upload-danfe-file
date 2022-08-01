@@ -18,9 +18,4 @@ public class NotaFiscalUploadedEvent {
 		this.notaFiscal = notaFiscal;
 	}
 	
-	public boolean temNumero() {
-		return notaFiscal.getNumero() > 0;
-	}
-
-	
 }

@@ -3,6 +3,8 @@ package com.glauber.nfeuploadservice.infrastructure.service.xml;
 import java.io.IOException;
 import java.io.StringReader;
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
 
 import org.jdom2.Document;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.glauber.nfeuploadservice.domain.model.NotaFiscal;
+import com.glauber.nfeuploadservice.domain.model.NotaFiscalDuplicata;
 import com.glauber.nfeuploadservice.domain.service.NotaFiscalXmlParseToDomainObjectService;
 
 @Service
@@ -50,6 +53,40 @@ public class SAXBuilderXmlParseToDomainObjectServiceImpl implements NotaFiscalXm
 			setNomeEmitenteOfEmitElement(notaFiscal, element);
 			setNomeDestinatarioOfDestElement(notaFiscal, element);
 			setValorNotaOfPagElement(notaFiscal, element);
+			
+			if ("cobr".equals(element.getName())) {
+				element.getChildren().stream().forEach(dupElement -> {
+					if ("nDup".equals(dupElement.getName())) {
+						dupElement.getChildren().forEach(nDupElement -> {
+							System.out.println("============================================ >nDupElement.getValue()" + nDupElement.getValue());
+							
+							Integer parcela = 1;
+							
+							NotaFiscalDuplicata duplicata = new NotaFiscalDuplicata();
+							
+							duplicata.setParcela(parcela);
+							
+							if ("dVenc".equals(nDupElement.getName())) {
+								try {
+									duplicata.setDataVencimento(new SimpleDateFormat("yyyy-MM-dd").parse(nDupElement.getValue()));
+									notaFiscal.getDuplicatas().add(duplicata);
+								} catch (ParseException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							}
+							
+							if ("vDup".equals(nDupElement.getName())) {
+								duplicata.setValor(new BigDecimal(nDupElement.getValue()));
+								notaFiscal.getDuplicatas().add(duplicata);
+							}
+							
+							parcela++;
+							
+						});
+					}
+				});
+			}
 		});
 		
 		return notaFiscal;

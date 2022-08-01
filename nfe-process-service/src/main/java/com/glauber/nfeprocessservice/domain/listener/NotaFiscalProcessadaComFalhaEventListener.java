@@ -10,25 +10,24 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionalEventListener;
 
-import com.glauber.nfeprocessservice.domain.event.NotaFiscalProcessadaEvent;
+import com.glauber.nfeprocessservice.domain.event.NotaFiscalFalhouEvent;
 import com.glauber.nfeprocessservice.domain.service.NotaFiscalStorageService;
   
   @Component 
-  public class NotaFiscalProcessadaEventListener {
+  public class NotaFiscalProcessadaComFalhaEventListener {
   
-	  private static final Logger logger = LoggerFactory.getLogger(NotaFiscalProcessadaEventListener.class);
+	  private static final Logger logger = LoggerFactory.getLogger(NotaFiscalProcessadaComFalhaEventListener.class);
   
 	  @Autowired private NotaFiscalStorageService notaFiscalStorageService;
-  
-	  @TransactionalEventListener 
+
+	  @TransactionalEventListener
 //	  @Transactional(propagation = Propagation.REQUIRES_NEW)
-	  public void whenSuccessfullyProcessed(NotaFiscalProcessadaEvent event) {
-		  logger.info(String.format("Nota Fiscal %s processada com sucesso",
-		  event.getNotaFiscal().getNomeArquivo()));
-		  
+	  public void whenProcessedWithFailure(NotaFiscalFalhouEvent event) {
+		  logger.info(String.format("Nota Fiscal %s processada com erro", event.getNotaFiscal().getNomeArquivo()));
+		
 		  File xmlFile = notaFiscalStorageService.findFileBy(event.getNotaFiscal().getNomeArquivo());
-		  
-		  notaFiscalStorageService.moveToOutputDirectory(xmlFile); 
-	  } 
+				
+		  notaFiscalStorageService.moveToErrorDirectory(xmlFile);
+	  }
   }
  

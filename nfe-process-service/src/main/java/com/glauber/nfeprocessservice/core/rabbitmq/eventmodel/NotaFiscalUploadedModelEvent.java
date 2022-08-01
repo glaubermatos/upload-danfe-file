@@ -2,6 +2,7 @@ package com.glauber.nfeprocessservice.core.rabbitmq.eventmodel;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
@@ -10,7 +11,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.glauber.nfeprocessservice.domain.model.NotaFiscal;
-import com.glauber.nfeprocessservice.domain.model.StatusProcessamento;
 
 public class NotaFiscalUploadedModelEvent {
 
@@ -26,6 +26,7 @@ public class NotaFiscalUploadedModelEvent {
 	private String nomeDestinatario;
 	private BigDecimal valorNota;
 	private String status;
+	private Set<NotaFiscalDuplicataModelEvent> duplicatas;
 	
 	public NotaFiscalUploadedModelEvent() {}
 	
@@ -37,17 +38,6 @@ public class NotaFiscalUploadedModelEvent {
 		this.valorNota = notaFiscal.getValorNota();
 		this.status = notaFiscal.getStatus().toString();
 		this.nomeArquivo = notaFiscal.getNomeArquivo();
-	}
-
-	public NotaFiscalUploadedModelEvent(String nomeArquivo, int numero, LocalDateTime dhRegistro, String nomeEmitente,
-			String nomeDestinatario, BigDecimal valorNota, StatusProcessamento status) {
-		this.numero = numero;
-		this.dhRegistro = dhRegistro;
-		this.nomeEmitente = nomeEmitente;
-		this.nomeDestinatario = nomeDestinatario;
-		this.valorNota = valorNota;
-		this.status = status.toString();
-		this.nomeArquivo = nomeArquivo;
 	}
 
 	public int getNumero() {
@@ -91,6 +81,12 @@ public class NotaFiscalUploadedModelEvent {
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public Set<NotaFiscalDuplicataModelEvent> getDuplicatas() {
+		return duplicatas;
+	}
+	public void setDuplicatas(Set<NotaFiscalDuplicataModelEvent> duplicatas) {
+		this.duplicatas = duplicatas;
 	}
 	
 }

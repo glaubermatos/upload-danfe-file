@@ -1,7 +1,6 @@
 package com.glauber.nfeprocessservice.infrastructure.service.procnfe.validator;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Path;
 
 import javax.xml.transform.Source;
@@ -11,7 +10,6 @@ import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
 import org.springframework.stereotype.Component;
-import org.xml.sax.SAXException;
 
 @Component
 public class XsdSchemaValidatorNFev4 {
@@ -35,11 +33,9 @@ public class XsdSchemaValidatorNFev4 {
 			
 			isValid = true;
 			
-		} catch (SAXException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		} catch (Exception e) {
+			return isValid;
+		} 
 		
 		return isValid;
 	}
