@@ -23,8 +23,8 @@ public class LerDiretorioInputService {
 	
 	private static final Logger logger = LoggerFactory.getLogger(LerDiretorioInputService.class);
 	
-//	private static final long DELAY_2_MIN = (1000 * 60) * 2 ;
-	private static final long DELAY_2_MIN = (1000 * 10);
+	private static final long DELAY_2_MIN = (1000 * 60) * 2 ;
+//	private static final long DELAY_2_MIN = (1000 * 10);
 	
 	@Autowired
 	private NotaFiscalStorageService notaFiscalStorageService;
