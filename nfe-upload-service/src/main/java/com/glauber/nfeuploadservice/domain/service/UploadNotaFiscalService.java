@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
+import com.glauber.nfeuploadservice.domain.event.NotaFiscalUploadedEvent;
 import com.glauber.nfeuploadservice.domain.model.NotaFiscal;
-import com.glauber.nfeuploadservice.domain.service.NotaFiscalStorageService.XmlWrapper;
-import com.glauber.nfeuploadservice.domain.service.event.notafiscal.NotaFiscalUploadedEvent;
+import com.glauber.nfeuploadservice.domain.service.NotaFiscalStorageService.NotaFiscalWrapper;
 
 @Service
 public class UploadNotaFiscalService {
@@ -21,9 +21,9 @@ public class UploadNotaFiscalService {
 	@Autowired
 	private ApplicationEventPublisher publisher;
 	
-	public void up(NotaFiscal notaFiscal, XmlWrapper xmlWrapper) {
+	public void upload(NotaFiscal notaFiscal, NotaFiscalWrapper notaFiscalWrapper) {
 		try {
-			notaFiscalStorageService.store(xmlWrapper);
+			notaFiscalStorageService.store(notaFiscalWrapper);
 			logger.info(String.format("Nota Fiscal número %d armazenada com sucesso!.", notaFiscal.getNumero()));
 			
 			publisher.publishEvent(new NotaFiscalUploadedEvent(notaFiscal));

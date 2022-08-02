@@ -12,18 +12,18 @@ import com.glauber.nfeuploadservice.core.storage.StorageProperties;
 import com.glauber.nfeuploadservice.domain.service.NotaFiscalStorageService;
 
 @Service
-public class LocalXmlNotaFiscalStorageServiceImpl implements NotaFiscalStorageService {
+public class LocalNotaFiscalStorageServiceImpl implements NotaFiscalStorageService {
 	
 	@Autowired
 	private StorageProperties storageProperties;
 
 	@Override
-	public void store(XmlWrapper xmlWrapper) {
+	public void store(NotaFiscalWrapper notaFiscalWrapper) {
 		try {
-			Path newXmlFilePath = getFilePath(xmlWrapper.getFileName());
-			var xmlInputStream = xmlWrapper.getInputStream();
+			Path xmlFilePath = getInputDirectoryPath(notaFiscalWrapper.getFileName());
+			var xmlInputStream = notaFiscalWrapper.getInputStream();
 			
-			FileCopyUtils.copy(xmlInputStream, Files.newOutputStream(newXmlFilePath));
+			FileCopyUtils.copy(xmlInputStream, Files.newOutputStream(xmlFilePath));
 			
 		} catch (IOException e) {
 			throw new StorageException("Não foi possível armazenar arquivo", e);
@@ -31,7 +31,7 @@ public class LocalXmlNotaFiscalStorageServiceImpl implements NotaFiscalStorageSe
 			
 	}
 	
-	private Path getFilePath(String xmlFileName) {
+	private Path getInputDirectoryPath(String xmlFileName) {
 		try {
 			String inputDirectoryName = storageProperties.getLocal().getXmlInputDirectory();
 			

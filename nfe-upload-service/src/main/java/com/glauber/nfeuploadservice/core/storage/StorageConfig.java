@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.glauber.nfeuploadservice.domain.service.NotaFiscalStorageService;
-import com.glauber.nfeuploadservice.infrastructure.service.storage.LocalXmlNotaFiscalStorageServiceImpl;
+import com.glauber.nfeuploadservice.infrastructure.service.storage.LocalNotaFiscalStorageServiceImpl;
 
 @Configuration
 public class StorageConfig {
@@ -16,11 +16,11 @@ public class StorageConfig {
 	@Bean
 	public NotaFiscalStorageService notaFiscalStorageService() {
 		switch (storageProperties.getType()) {
-		case LOCAL:
-			return new LocalXmlNotaFiscalStorageServiceImpl();
-
-		default:
-			return null;
+			case LOCAL:
+				return new LocalNotaFiscalStorageServiceImpl();
+	
+			default:
+				return null;
 		}
 	}
 

@@ -1,4 +1,4 @@
-package com.glauber.nfeuploadservice.domain.service.event.notafiscal;
+package com.glauber.nfeuploadservice.domain.event;
 
 import com.glauber.nfeuploadservice.domain.model.NotaFiscal;
 

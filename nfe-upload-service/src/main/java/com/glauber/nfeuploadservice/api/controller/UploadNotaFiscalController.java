@@ -26,7 +26,7 @@ import com.glauber.nfeuploadservice.api.exceptionhandler.problem.ProblemType;
 import com.glauber.nfeuploadservice.api.model.disassembler.NotaFiscalInputDisassembler;
 import com.glauber.nfeuploadservice.api.model.input.NotaFiscalInput;
 import com.glauber.nfeuploadservice.domain.model.NotaFiscal;
-import com.glauber.nfeuploadservice.domain.service.NotaFiscalStorageService.XmlWrapper;
+import com.glauber.nfeuploadservice.domain.service.NotaFiscalStorageService.NotaFiscalWrapper;
 import com.glauber.nfeuploadservice.domain.service.UploadNotaFiscalService;
 
 @RestController
@@ -42,13 +42,6 @@ public class UploadNotaFiscalController {
 	@Autowired
 	private NotaFiscalInputDisassembler notaFiscalInputDisassembler;
 	
-//	@GetMapping
-//	public Page<NotaFiscal> index(@PageableDefault(size = 10) Pageable pageable) {
-//		Page<NotaFiscal> notaFiscalPage = notaFiscalRepository.findAll(pageable);
-//		
-//		return notaFiscalPage;
-//	}
-	
 	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public String upload(@Valid NotaFiscalInput notaFiscalInput) {
@@ -57,11 +50,11 @@ public class UploadNotaFiscalController {
 			
 			InputStream xmlInputStream = notaFiscalInput.getInputStream();
 			
-			XmlWrapper xmlWrapper = new XmlWrapper();
-			xmlWrapper.setFileName(notaFiscalInput.getFileName());
-			xmlWrapper.setInputStream(xmlInputStream);
+			NotaFiscalWrapper notaFiscalWrapper = new NotaFiscalWrapper();
+			notaFiscalWrapper.setFileName(notaFiscalInput.getFileName());
+			notaFiscalWrapper.setInputStream(xmlInputStream);
 			
-			uploadNotaFiscalService.up(notaFiscal, xmlWrapper);
+			uploadNotaFiscalService.upload(notaFiscal, notaFiscalWrapper);
 			
 			return "Seu arquivo foi recepcionado com sucesso, está aguardando para ser processado.";
 			
@@ -69,12 +62,6 @@ public class UploadNotaFiscalController {
 			throw new RuntimeException(e);
 		}
 	}
-	
-//	@DeleteMapping("/{numeroNotaFiscal}")
-//	@ResponseStatus(HttpStatus.NO_CONTENT)
-//	public void remover(@PathVariable("numeroNotaFiscal") int numero) {
-//		notaFiscalRegistrationService.remover(numero);
-//	}
 	
 //	@ExceptionHandler(NotaFiscalNaoEncontradaException.class)
 //	public ResponseEntity<Object> handleNotaFiscalNaoEncontradaException(NotaFiscalNaoEncontradaException ex) {

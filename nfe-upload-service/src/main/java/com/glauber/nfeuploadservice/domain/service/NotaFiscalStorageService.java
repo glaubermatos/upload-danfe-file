@@ -4,9 +4,9 @@ import java.io.InputStream;
 
 public interface NotaFiscalStorageService {
 
-	void store(XmlWrapper newInvoice);
+	void store(NotaFiscalWrapper newInvoice);
 	
-	public class XmlWrapper {
+	public class NotaFiscalWrapper {
 		
 		private String fileName;
 		private InputStream inputStream;

@@ -29,18 +29,9 @@ public class RabbitMQConfig {
 	}
 	
 	@Bean
-	public Jackson2JsonMessageConverter messageCOnverter() {
+	public Jackson2JsonMessageConverter messageConverter() {
 		return new Jackson2JsonMessageConverter();
 	}
-	
-//	@Bean
-//	public ObjectMapper objectMapper() {
-//		ObjectMapper mapper = new ObjectMapper()
-//				.registerModule(new Jdk8Module())
-//				.registerModule(new JavaTimeModule()).configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-//		
-//		return mapper;
-//	}
 	
 	@Bean
 	public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory, Jackson2JsonMessageConverter messageConverter) {

@@ -12,7 +12,7 @@ import com.glauber.nfeuploadservice.core.validation.FileContentType;
 
 public class NotaFiscalInput {
 
-	//TODO: criar validação customizada para limitar o tamanho do arquivo
+	//TODO: Poderia criar validação customizada para limitar o tamanho do arquivo
 	@NotNull
 	@FileContentType(allowed = {MediaType.APPLICATION_XML_VALUE})
 	private MultipartFile xmlNotaFiscal;

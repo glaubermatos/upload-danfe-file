@@ -16,10 +16,10 @@ import org.springframework.stereotype.Service;
 
 import com.glauber.nfeuploadservice.domain.model.NotaFiscal;
 import com.glauber.nfeuploadservice.domain.model.NotaFiscalDuplicata;
-import com.glauber.nfeuploadservice.domain.service.NotaFiscalXmlParseToDomainObjectService;
+import com.glauber.nfeuploadservice.domain.service.ParseXmlToNotaFiscalService;
 
 @Service
-public class SAXBuilderXmlParseToDomainObjectServiceImpl implements NotaFiscalXmlParseToDomainObjectService {
+public class SAXBuilderParceXmlToNotaFiscalServiceImpl implements ParseXmlToNotaFiscalService {
 
 	@Autowired
 	private SAXBuilder saxBuilder;
@@ -53,43 +53,43 @@ public class SAXBuilderXmlParseToDomainObjectServiceImpl implements NotaFiscalXm
 			setNomeEmitenteOfEmitElement(notaFiscal, element);
 			setNomeDestinatarioOfDestElement(notaFiscal, element);
 			setValorNotaOfPagElement(notaFiscal, element);
-			
-			if ("cobr".equals(element.getName())) {
-				element.getChildren().stream().forEach(dupElement -> {
-					if ("nDup".equals(dupElement.getName())) {
-						dupElement.getChildren().forEach(nDupElement -> {
-							System.out.println("============================================ >nDupElement.getValue()" + nDupElement.getValue());
-							
-							Integer parcela = 1;
-							
-							NotaFiscalDuplicata duplicata = new NotaFiscalDuplicata();
-							
-							duplicata.setParcela(parcela);
-							
-							if ("dVenc".equals(nDupElement.getName())) {
-								try {
-									duplicata.setDataVencimento(new SimpleDateFormat("yyyy-MM-dd").parse(nDupElement.getValue()));
-									notaFiscal.getDuplicatas().add(duplicata);
-								} catch (ParseException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
-							}
-							
-							if ("vDup".equals(nDupElement.getName())) {
-								duplicata.setValor(new BigDecimal(nDupElement.getValue()));
-								notaFiscal.getDuplicatas().add(duplicata);
-							}
-							
-							parcela++;
-							
-						});
-					}
-				});
-			}
+			setDuplicatasOfCobrElement(notaFiscal, element);
 		});
 		
 		return notaFiscal;
+	}
+
+	private void setDuplicatasOfCobrElement(NotaFiscal notaFiscal, Element element) {
+		if ("cobr".equals(element.getName())) {
+			element.getChildren().stream().forEach(dupElement -> {
+				if ("nDup".equals(dupElement.getName())) {
+					dupElement.getChildren().forEach(nDupElement -> {
+						NotaFiscalDuplicata duplicata = new NotaFiscalDuplicata();
+						
+						Integer parcela = 1;
+						duplicata.setParcela(parcela);
+						
+						if ("dVenc".equals(nDupElement.getName())) {
+							try {
+								duplicata.setDataVencimento(new SimpleDateFormat("yyyy-MM-dd").parse(nDupElement.getValue()));
+								notaFiscal.getDuplicatas().add(duplicata);
+								
+							} catch (ParseException e) {
+								throw new RuntimeException(e);
+							}
+						}
+						
+						if ("vDup".equals(nDupElement.getName())) {
+							duplicata.setValor(new BigDecimal(nDupElement.getValue()));
+							notaFiscal.getDuplicatas().add(duplicata);
+						}
+						
+						parcela++;
+						
+					});
+				}
+			});
+		}
 	}
 
 	private void setValorNotaOfPagElement(NotaFiscal notaFiscal, Element element) {
