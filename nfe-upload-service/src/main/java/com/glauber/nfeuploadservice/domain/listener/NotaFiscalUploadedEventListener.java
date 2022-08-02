@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import com.glauber.nfeuploadservice.api.model.event.NotaFiscalMessageEvent;
+import com.glauber.nfeuploadservice.domain.event.NotaFiscalMessage;
 import com.glauber.nfeuploadservice.domain.event.NotaFiscalUploadedEvent;
 import com.glauber.nfeuploadservice.domain.service.UploadNotaFiscalService;
 
@@ -25,7 +25,7 @@ public class NotaFiscalUploadedEventListener {
 
 	@EventListener
 	public void whenNotaFiscalUploaded(NotaFiscalUploadedEvent event) {
-		NotaFiscalMessageEvent notaFiscalMessage = new NotaFiscalMessageEvent(event.getNotaFiscal());
+		NotaFiscalMessage notaFiscalMessage = new NotaFiscalMessage(event.getNotaFiscal());
 		
 		rabbitTemplate.convertAndSend(queue.getActualName(), notaFiscalMessage);
 		

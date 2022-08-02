@@ -6,8 +6,8 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.glauber.nfeprocessservice.core.rabbitmq.eventmodel.NotaFiscalUploadedModelEvent;
-import com.glauber.nfeprocessservice.core.rabbitmq.eventmodel.NotaFiscalUploadedModelEventDisassembler;
+import com.glauber.nfeprocessservice.core.rabbitmq.message.NotaFiscalMessage;
+import com.glauber.nfeprocessservice.core.rabbitmq.message.converter.NotaFiscalMessageConverter;
 import com.glauber.nfeprocessservice.domain.model.NotaFiscal;
 import com.glauber.nfeprocessservice.domain.service.NotaFiscalRegistrationService;
 
@@ -20,13 +20,13 @@ public class FileUploadedListener {
 	private NotaFiscalRegistrationService notaFiscalRegistrationService;
 	
 	@Autowired
-	private NotaFiscalUploadedModelEventDisassembler notaFiscalUploadedModelEventDisassembler; 
+	private NotaFiscalMessageConverter notaFiscalMessageConverter; 
 
 	@RabbitListener(queues = "nfe-upload-service.v1.file-uploaded")
-	public void whenFileUploaded(NotaFiscalUploadedModelEvent event) {
-		logger.info(String.format("Nota Fiscal %s recebida.", event.getNomeArquivo()));
+	public void whenFileUploaded(NotaFiscalMessage message) {
+		logger.info(String.format("Nota Fiscal %s recebida.", message.getNomeArquivo()));
 		
-		NotaFiscal notaFiscal = notaFiscalUploadedModelEventDisassembler.toDomainObject(event);
+		NotaFiscal notaFiscal = notaFiscalMessageConverter.convertToDomainObject(message);
 		
 		notaFiscalRegistrationService.save(notaFiscal);
 	}

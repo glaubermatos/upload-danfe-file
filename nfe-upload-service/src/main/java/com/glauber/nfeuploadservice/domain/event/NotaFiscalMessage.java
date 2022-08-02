@@ -1,4 +1,4 @@
-package com.glauber.nfeuploadservice.api.model.event;
+package com.glauber.nfeuploadservice.domain.event;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -15,7 +15,7 @@ import com.glauber.nfeuploadservice.domain.model.NotaFiscal;
 import com.glauber.nfeuploadservice.domain.model.NotaFiscalDuplicata;
 import com.glauber.nfeuploadservice.domain.model.StatusProcessamento;
 
-public class NotaFiscalMessageEvent {
+public class NotaFiscalMessage {
 
 	private int numero;
 	private String nomeArquivo;
@@ -31,9 +31,9 @@ public class NotaFiscalMessageEvent {
 	private String status;
 	private Set<NotaFiscalDuplicata> duplicatas = new HashSet<>();
 	
-	public NotaFiscalMessageEvent() {}
+	public NotaFiscalMessage() {}
 	
-	public NotaFiscalMessageEvent(NotaFiscal notaFiscal) {
+	public NotaFiscalMessage(NotaFiscal notaFiscal) {
 		this.numero = notaFiscal.getNumero();
 		this.dhRegistro = notaFiscal.getDhRegistro();
 		this.nomeEmitente = notaFiscal.getNomeEmitente();
@@ -44,7 +44,7 @@ public class NotaFiscalMessageEvent {
 		this.duplicatas = notaFiscal.getDuplicatas();
 	}
 
-	public NotaFiscalMessageEvent(String nomeArquivo, int numero, LocalDateTime dhRegistro, String nomeEmitente,
+	public NotaFiscalMessage(String nomeArquivo, int numero, LocalDateTime dhRegistro, String nomeEmitente,
 			String nomeDestinatario, BigDecimal valorNota, StatusProcessamento status, Set<NotaFiscalDuplicata> duplicatas) {
 		this.numero = numero;
 		this.dhRegistro = dhRegistro;

@@ -6,5 +6,5 @@ import com.glauber.nfeprocessservice.domain.model.NotaFiscal;
 
 public interface ProcessarNotaFiscalService {
 
-	void processar(NotaFiscal notaFiscal, File xml);
+	void execute(NotaFiscal notaFiscal, File xml);
 }

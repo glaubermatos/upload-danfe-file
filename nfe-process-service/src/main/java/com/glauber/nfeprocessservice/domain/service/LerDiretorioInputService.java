@@ -46,6 +46,7 @@ public class LerDiretorioInputService {
 				files.stream().forEach(file -> {
 					notasFiscais.stream().forEach(notaFiscal -> {
 						if (file.getName().equals(notaFiscal.getNomeArquivo())) {
+							//TODO notaFiscal.processar(file);
 							notaFiscal.processar();
 							
 							notaFiscalRepository.save(notaFiscal);
@@ -55,41 +56,6 @@ public class LerDiretorioInputService {
 			}
 		} catch (StorageException e) {
 			logger.error(e.getMessage());
-			e.printStackTrace();
 		}
-			
-			
-//			String fileName = "26161413000141_202100000000062.xml";
-//			
-//			System.out.println("Processando nota fiscal....");
-//			
-//			Path xmlPath = getFilePath(fileName);
-//			
-//			InputStream inputStream = Files.newInputStream(xmlPath);
-//			
-//			FileCopyUtils.copy(inputStream, Files.newOutputStream(Path.of("../output/"+fileName)));
-//			Files.deleteIfExists(xmlPath);
-			
-		
 	}
-	
-//	public static List<FileItem> listDirectoryAppend(File dir, java.util.List<FileItem> lista) { 
-//		if (dir.isDirectory()) { 
-//			String[] filhos = dir.list(); 
-//			for (int i = 0; i < filhos.length; i++) { 
-//				File nome = new File(dir, filhos[i]); 
-//				if (nome.isFile()) { 
-//					if (nome.getName().toUpperCase().endsWith(".GBK")) { 
-//						lista.add(new FileItem(nome)); 
-//					} 
-//				} else if (nome.isDirectory()) {
-//					listDirectoryAppend(nome, lista); 
-//				} 
-//			} 
-//		} else { 
-//			lista.add(new FileItem(dir)); 
-//		} 
-//		
-//		return lista; 
-//	}
 }

@@ -1,7 +1,8 @@
-package com.glauber.nfeprocessservice.core.rabbitmq.eventmodel;
+package com.glauber.nfeprocessservice.core.rabbitmq.message;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -12,7 +13,7 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.glauber.nfeprocessservice.domain.model.NotaFiscal;
 
-public class NotaFiscalUploadedModelEvent {
+public class NotaFiscalMessage {
 
 	private int numero;
 	private String nomeArquivo;
@@ -26,11 +27,11 @@ public class NotaFiscalUploadedModelEvent {
 	private String nomeDestinatario;
 	private BigDecimal valorNota;
 	private String status;
-	private Set<NotaFiscalDuplicataModelEvent> duplicatas;
+	private Set<Duplicata> duplicatas;
 	
-	public NotaFiscalUploadedModelEvent() {}
+	public NotaFiscalMessage() {}
 	
-	public NotaFiscalUploadedModelEvent(NotaFiscal notaFiscal) {
+	public NotaFiscalMessage(NotaFiscal notaFiscal) {
 		this.numero = notaFiscal.getNumero();
 		this.dhRegistro = notaFiscal.getDhRegistro();
 		this.nomeEmitente = notaFiscal.getNomeEmitente();
@@ -82,11 +83,46 @@ public class NotaFiscalUploadedModelEvent {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public Set<NotaFiscalDuplicataModelEvent> getDuplicatas() {
+	public Set<Duplicata> getDuplicatas() {
 		return duplicatas;
 	}
-	public void setDuplicatas(Set<NotaFiscalDuplicataModelEvent> duplicatas) {
+	public void setDuplicatas(Set<Duplicata> duplicatas) {
 		this.duplicatas = duplicatas;
+	}
+	
+	public class Duplicata {
+
+		private Integer parcela;
+		private BigDecimal valor;
+		private Date dataVencimento;
+		
+		public Duplicata() {}
+		
+		public Duplicata(Integer parcela, BigDecimal valor, Date dataVencimento) {
+			this.parcela = parcela;
+			this.valor = valor;
+			this.dataVencimento = dataVencimento;
+		}
+
+		public Integer getParcela() {
+			return parcela;
+		}
+		public void setParcela(Integer parcela) {
+			this.parcela = parcela;
+		}
+		public BigDecimal getValor() {
+			return valor;
+		}
+		public void setValor(BigDecimal valor) {
+			this.valor = valor;
+		}
+		public Date getDataVencimento() {
+			return dataVencimento;
+		}
+		public void setDataVencimento(Date dataVencimento) {
+			this.dataVencimento = dataVencimento;
+		}
+		
 	}
 	
 }

@@ -12,7 +12,7 @@ import javax.xml.validation.Validator;
 import org.springframework.stereotype.Component;
 
 @Component
-public class XsdSchemaValidatorNFev4 {
+public class SchemaValidatorNFev4 {
 
 	public boolean validate(File xmlFile) {
 		boolean isValid = false;

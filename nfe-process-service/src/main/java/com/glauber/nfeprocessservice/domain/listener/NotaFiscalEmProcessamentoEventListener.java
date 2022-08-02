@@ -15,9 +15,9 @@ import com.glauber.nfeprocessservice.domain.service.NotaFiscalStorageService;
 import com.glauber.nfeprocessservice.domain.service.ProcessarNotaFiscalService;
 
 @Component
-public class ProcessarNotaFiscalEventListener {
+public class NotaFiscalEmProcessamentoEventListener {
 	
-	private static final Logger logger = LoggerFactory.getLogger(ProcessarNotaFiscalEventListener.class);
+	private static final Logger logger = LoggerFactory.getLogger(NotaFiscalEmProcessamentoEventListener.class);
 	
 	@Autowired
 	private ProcessarNotaFiscalService processarNotaFiscalService;
@@ -32,6 +32,6 @@ public class ProcessarNotaFiscalEventListener {
 		
 		File xmlFile = notaFiscalStorageService.findFileBy(event.getNotaFiscal().getNomeArquivo());
 		
-		processarNotaFiscalService.processar(event.getNotaFiscal(), xmlFile);
+		processarNotaFiscalService.execute(event.getNotaFiscal(), xmlFile);
 	}
 }
