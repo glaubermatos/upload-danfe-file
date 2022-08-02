@@ -1,10 +1,13 @@
 package com.glauber.nfeprocessservice.api.controller;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,8 +18,11 @@ import com.glauber.nfeprocessservice.api.model.DuplicataModel;
 import com.glauber.nfeprocessservice.api.model.NotaFiscalModel;
 import com.glauber.nfeprocessservice.api.model.assembler.DuplicataModelAssembler;
 import com.glauber.nfeprocessservice.api.model.assembler.NotaFiscalModelAssembler;
+import com.glauber.nfeprocessservice.domain.exception.EntidadeNaoEncontradaException;
 import com.glauber.nfeprocessservice.domain.repository.NotaFiscalRepository;
 import com.glauber.nfeprocessservice.domain.service.NotaFiscalRegistrationService;
+import com.glauber.nfeuploadservice.api.exceptionhandler.problem.ApiProblemDetail;
+import com.glauber.nfeuploadservice.api.exceptionhandler.problem.ProblemType;
 
 @RestController
 @RequestMapping("/notas-fiscais")
@@ -55,5 +61,29 @@ public class NotaFiscalController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable int numeroNotaFiscal) {
 		notaFiscalRegistrationService.remover(numeroNotaFiscal);
+	}
+	
+	@ExceptionHandler(EntidadeNaoEncontradaException.class)
+	public ResponseEntity<Object> handleNotaFiscalNaoEncontradaException(EntidadeNaoEncontradaException ex) {
+		HttpStatus status = HttpStatus.NOT_FOUND;
+		
+		Integer statusCode = status.value();
+		ProblemType type = ProblemType.ENTIDADE_NAO_ENCONTRADA;
+		String detail = ex.getMessage();
+		
+		ApiProblemDetail problem = createParcialProblemDetail(statusCode, type, detail);
+		problem.setUserMessage(detail);
+		
+		return ResponseEntity.status(status).body(problem);
+	}
+	
+	private ApiProblemDetail createParcialProblemDetail(Integer statusCode, ProblemType type, String detail) {
+		ApiProblemDetail problem = new ApiProblemDetail();
+		problem.setStatus(statusCode);
+		problem.setTitle(type.getTitle());
+		problem.setTimestamp(OffsetDateTime.now());
+		problem.setDetail(detail);
+		
+		return problem;
 	}
 }
