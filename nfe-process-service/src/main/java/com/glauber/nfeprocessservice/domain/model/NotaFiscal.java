@@ -144,4 +144,16 @@ public class NotaFiscal extends AbstractAggregateRoot<NotaFiscal>  {
 		registerEvent(new NotaFiscalFalhouEvent(this));
 	}
 	
+	public boolean estaAguardandoProcessamento() {
+		return getStatus().equals(StatusProcessamento.AGUARDANDO_PROCESSAMENTO);
+	}
+	
+	public boolean foiProcessada() {
+		return getStatus().equals(StatusProcessamento.PROCESSADA);
+	}
+	
+	public boolean foiProcessadaComErro() {
+		return getStatus().equals(StatusProcessamento.PROCESSADA_COM_ERRO);
+	}
+	
 }

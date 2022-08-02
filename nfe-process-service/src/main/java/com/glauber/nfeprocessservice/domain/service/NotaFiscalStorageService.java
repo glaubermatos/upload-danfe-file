@@ -7,6 +7,9 @@ public interface NotaFiscalStorageService {
 
 	List<File> loadFiles();
 	File findFileBy(String fileName);
-	void moveToOutputDirectory(File xmlFile);
-	void moveToErrorDirectory(File xml);
+	void moveToOutputDirectory(File file);
+	void moveToErrorDirectory(File file);
+	void removeFileFromInputDirectory(String fileName);
+	void removeFileFromOutputDirectory(String fileName);
+	void removeFileFromErrorDirectory(String fileName);
 }

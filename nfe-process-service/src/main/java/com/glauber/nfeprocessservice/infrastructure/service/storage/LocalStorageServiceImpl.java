@@ -77,6 +77,33 @@ public class LocalStorageServiceImpl implements NotaFiscalStorageService {
 		}
 	}
 	
+	@Override
+	public void removeFileFromInputDirectory(String fileName) {
+		try {
+			Files.deleteIfExists(getPathInputDirectory().resolve(fileName));
+		} catch (IOException e) {
+			throw new StorageException(String.format("Arquivo %s não pôde ser removido", fileName), e);
+		}
+	}
+	
+	@Override
+	public void removeFileFromOutputDirectory(String fileName) {
+		try {
+			Files.deleteIfExists(getPathOutputDirectory().resolve(fileName));
+		} catch (IOException e) {
+			throw new StorageException(String.format("Arquivo %s não pôde ser removido", fileName), e);
+		}
+	}
+	
+	@Override
+	public void removeFileFromErrorDirectory(String fileName) {
+		try {
+			Files.deleteIfExists(getPathErrorDirectory().resolve(fileName));
+		} catch (IOException e) {
+			throw new StorageException(String.format("Arquivo %s não pôde ser removido", fileName), e);
+		}
+	}
+	
 	private Path getPathInputDirectory() throws IOException {
 		return Path.of(storageProperties.getLocal().getXmlInputDirectory());
 	}

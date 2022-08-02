@@ -5,8 +5,10 @@ import javax.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
+import com.glauber.nfeprocessservice.domain.event.NotaFiscalRemovidaEvent;
 import com.glauber.nfeprocessservice.domain.exception.NotaFiscalNaoEncontradaException;
 import com.glauber.nfeprocessservice.domain.model.NotaFiscal;
 import com.glauber.nfeprocessservice.domain.repository.NotaFiscalRepository;
@@ -19,6 +21,9 @@ public class NotaFiscalRegistrationService {
 	@Autowired
 	private NotaFiscalRepository notaFiscalRepository;
 	
+	@Autowired
+	private ApplicationEventPublisher publisher;
+	
 	@Transactional
 	public void save(NotaFiscal notaFiscal) {
 		notaFiscalRepository.save(notaFiscal);
@@ -30,10 +35,11 @@ public class NotaFiscalRegistrationService {
 	public void remover(int numero) {
 		NotaFiscal notaFiscal = findNotaFiscalByNumeroOrElseThrow(numero);
 		notaFiscalRepository.delete(notaFiscal);
-		//TODO: remover arquivo após exclusão da nota fiscal do banco de dados
+		
+		publisher.publishEvent(new NotaFiscalRemovidaEvent(notaFiscal));
 	}
 
-	private NotaFiscal findNotaFiscalByNumeroOrElseThrow(int numero) {
+	public NotaFiscal findNotaFiscalByNumeroOrElseThrow(int numero) {
 		return notaFiscalRepository.findByNumero(numero)
 				.orElseThrow(() -> new NotaFiscalNaoEncontradaException(numero));
 	}
