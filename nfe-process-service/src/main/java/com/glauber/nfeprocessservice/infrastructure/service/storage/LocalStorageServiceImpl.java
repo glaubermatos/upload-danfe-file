@@ -7,6 +7,8 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
@@ -16,6 +18,8 @@ import com.glauber.nfeprocessservice.domain.service.NotaFiscalStorageService;
 
 @Service
 public class LocalStorageServiceImpl implements NotaFiscalStorageService {
+	
+	private static final Logger logger = LoggerFactory.getLogger(LocalStorageServiceImpl.class);
 
 	@Autowired
 	private StorageProperties storageProperties;
@@ -36,26 +40,17 @@ public class LocalStorageServiceImpl implements NotaFiscalStorageService {
 	}
 
 	@Override
-	public File findFileBy(String fileName) {
-		try {
-			Path path = getPathInputDirectory().resolve(fileName);
-			
-			return path.toFile();
-			
-		} catch (IOException e) {
-			throw new StorageException(String.format("Arquivo %s não pôde ser encontrado", fileName), e);
-		}
-	}
-
-	@Override
 	public void moveToOutputDirectory(File xml) {
 		String fileName = xml.getName();
 		try {
+			var diretorio = getPathOutputDirectory();
 			
-			Path pathOutputDirectory = getPathOutputDirectory().resolve(fileName);
+			Path pathOutputDirectory = diretorio.resolve(fileName);
 			
 			FileCopyUtils.copy(xml, pathOutputDirectory.toFile());
 			Files.deleteIfExists(getPathInputDirectory().resolve(fileName));
+			
+			logger.info(String.format("Arquivo %s movido para o diretório %s", fileName, diretorio));
 			
 		} catch (IOException e) {
 			throw new StorageException(String.format("Arquivo %s não pôde ser enviado para o diretório de destino", fileName), e);
@@ -66,11 +61,14 @@ public class LocalStorageServiceImpl implements NotaFiscalStorageService {
 	public void moveToErrorDirectory(File xml) {
 		String fileName = xml.getName();
 		try {
+			var diretorio = getPathErrorDirectory();
 			
-			Path pathErrorDirectory = getPathErrorDirectory().resolve(fileName);
+			Path pathErrorDirectory = diretorio.resolve(fileName);
 			
 			FileCopyUtils.copy(xml, pathErrorDirectory.toFile());
 			Files.deleteIfExists(getPathInputDirectory().resolve(fileName));
+			
+			logger.info(String.format("Arquivo %s movido para o diretório %s", fileName, diretorio));
 			
 		} catch (IOException e) {
 			throw new StorageException(String.format("Arquivo %s não pôde ser enviado para o diretório de destino", fileName), e);
@@ -80,7 +78,12 @@ public class LocalStorageServiceImpl implements NotaFiscalStorageService {
 	@Override
 	public void removeFileFromInputDirectory(String fileName) {
 		try {
-			Files.deleteIfExists(getPathInputDirectory().resolve(fileName));
+			var diretorio = getPathInputDirectory();
+			
+			Files.deleteIfExists(diretorio.resolve(fileName));
+			
+			logger.info(String.format("Arquivo %s removido do diretório %s", fileName, diretorio));
+			
 		} catch (IOException e) {
 			throw new StorageException(String.format("Arquivo %s não pôde ser removido", fileName), e);
 		}
@@ -89,7 +92,12 @@ public class LocalStorageServiceImpl implements NotaFiscalStorageService {
 	@Override
 	public void removeFileFromOutputDirectory(String fileName) {
 		try {
-			Files.deleteIfExists(getPathOutputDirectory().resolve(fileName));
+			var diretorio = getPathOutputDirectory();
+			
+			Files.deleteIfExists(diretorio.resolve(fileName));
+			
+			logger.info(String.format("Arquivo %s removido do diretório %s", fileName, diretorio));
+			
 		} catch (IOException e) {
 			throw new StorageException(String.format("Arquivo %s não pôde ser removido", fileName), e);
 		}
@@ -98,7 +106,12 @@ public class LocalStorageServiceImpl implements NotaFiscalStorageService {
 	@Override
 	public void removeFileFromErrorDirectory(String fileName) {
 		try {
-			Files.deleteIfExists(getPathErrorDirectory().resolve(fileName));
+			var diretorio = getPathErrorDirectory();
+			
+			Files.deleteIfExists(diretorio.resolve(fileName));
+			
+			logger.info(String.format("Arquivo %s removido do diretório %s", fileName, diretorio));
+			
 		} catch (IOException e) {
 			throw new StorageException(String.format("Arquivo %s não pôde ser removido", fileName), e);
 		}

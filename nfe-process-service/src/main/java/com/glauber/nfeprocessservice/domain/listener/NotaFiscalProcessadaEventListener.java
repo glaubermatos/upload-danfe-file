@@ -1,7 +1,5 @@
   package com.glauber.nfeprocessservice.domain.listener;
   
-  import java.io.File;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +21,7 @@ import com.glauber.nfeprocessservice.domain.service.NotaFiscalStorageService;
 		  logger.info(String.format("Nota Fiscal %s processada com sucesso",
 		  event.getNotaFiscal().getNomeArquivo()));
 		  
-		  File xmlFile = notaFiscalStorageService.findFileBy(event.getNotaFiscal().getNomeArquivo());
-		  
-		  notaFiscalStorageService.moveToOutputDirectory(xmlFile); 
+		  notaFiscalStorageService.moveToOutputDirectory(event.getFile()); 
 	  } 
   }
  

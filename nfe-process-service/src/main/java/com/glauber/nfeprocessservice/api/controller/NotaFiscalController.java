@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.glauber.nfeprocessservice.api.exceptionhandler.problem.ApiProblemDetail;
+import com.glauber.nfeprocessservice.api.exceptionhandler.problem.ProblemType;
 import com.glauber.nfeprocessservice.api.model.DuplicataModel;
 import com.glauber.nfeprocessservice.api.model.NotaFiscalModel;
 import com.glauber.nfeprocessservice.api.model.assembler.DuplicataModelAssembler;
@@ -21,8 +23,6 @@ import com.glauber.nfeprocessservice.api.model.assembler.NotaFiscalModelAssemble
 import com.glauber.nfeprocessservice.domain.exception.EntidadeNaoEncontradaException;
 import com.glauber.nfeprocessservice.domain.repository.NotaFiscalRepository;
 import com.glauber.nfeprocessservice.domain.service.NotaFiscalRegistrationService;
-import com.glauber.nfeuploadservice.api.exceptionhandler.problem.ApiProblemDetail;
-import com.glauber.nfeuploadservice.api.exceptionhandler.problem.ProblemType;
 
 @RestController
 @RequestMapping("/notas-fiscais")

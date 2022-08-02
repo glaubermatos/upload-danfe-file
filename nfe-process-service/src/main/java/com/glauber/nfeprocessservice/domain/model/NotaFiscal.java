@@ -1,5 +1,6 @@
 package com.glauber.nfeprocessservice.domain.model;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -126,22 +127,22 @@ public class NotaFiscal extends AbstractAggregateRoot<NotaFiscal>  {
 				numero, dhRegistro, nomeEmitente, nomeDestinatario, valorNota);
 	}
 	
-	public void processar() {
+	public void processar(File file) {
 		setStatus(StatusProcessamento.EM_PROCESSAMENTO);
 		
-		registerEvent(new NotaFiscalEmProcessamentoEvent(this));
+		registerEvent(new NotaFiscalEmProcessamentoEvent(this, file));
 	}
 
-	public void processada() {
+	public void processada(File file) {
 		setStatus(StatusProcessamento.PROCESSADA);
 		
-		registerEvent(new NotaFiscalProcessadaEvent(this));
+		registerEvent(new NotaFiscalProcessadaEvent(this, file));
 	}
 
-	public void falhou() {
+	public void falhou(File file) {
 		setStatus(StatusProcessamento.PROCESSADA_COM_ERRO);
 		
-		registerEvent(new NotaFiscalFalhouEvent(this));
+		registerEvent(new NotaFiscalFalhouEvent(this, file));
 	}
 	
 	public boolean estaAguardandoProcessamento() {

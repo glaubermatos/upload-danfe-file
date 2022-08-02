@@ -1,8 +1,6 @@
   package com.glauber.nfeprocessservice.domain.listener;
   
-  import java.io.File;
-
-import org.slf4j.Logger;
+  import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,10 +19,8 @@ import com.glauber.nfeprocessservice.domain.service.NotaFiscalStorageService;
 	  @TransactionalEventListener
 	  public void whenProcessedWithFailure(NotaFiscalFalhouEvent event) {
 		  logger.info(String.format("Nota Fiscal %s processada com erro", event.getNotaFiscal().getNomeArquivo()));
-		
-		  File xmlFile = notaFiscalStorageService.findFileBy(event.getNotaFiscal().getNomeArquivo());
 				
-		  notaFiscalStorageService.moveToErrorDirectory(xmlFile);
+		  notaFiscalStorageService.moveToErrorDirectory(event.getFile());
 	  }
   }
  

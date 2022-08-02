@@ -24,7 +24,7 @@ public class LerDiretorioInputService {
 	private static final Logger logger = LoggerFactory.getLogger(LerDiretorioInputService.class);
 	
 //	private static final long DELAY_2_MIN = (1000 * 60) * 2 ;
-	private static final long DELAY_2_MIN = (1000 * 20);
+	private static final long DELAY_2_MIN = (1000 * 10);
 	
 	@Autowired
 	private NotaFiscalStorageService notaFiscalStorageService;
@@ -46,8 +46,7 @@ public class LerDiretorioInputService {
 				files.stream().forEach(file -> {
 					notasFiscais.stream().forEach(notaFiscal -> {
 						if (file.getName().equals(notaFiscal.getNomeArquivo())) {
-							//TODO notaFiscal.processar(file);
-							notaFiscal.processar();
+							notaFiscal.processar(file);
 							
 							notaFiscalRepository.save(notaFiscal);
 						}

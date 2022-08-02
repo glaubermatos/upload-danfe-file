@@ -27,11 +27,11 @@ public class ProcessarNotaFiscalServiceImpl implements ProcessarNotaFiscalServic
 		boolean xmlProcessadoComSucesso = schemaValidatorNFev4.validate(xml);
 		
 		if (xmlProcessadoComSucesso) { 
-			notaFiscal.processada();
+			notaFiscal.processada(xml);
 			notaFiscalRepository.save(notaFiscal);
 			
 		} else {
-			notaFiscal.falhou();
+			notaFiscal.falhou(xml);
 			notaFiscalRepository.save(notaFiscal);
 		}
 	}
