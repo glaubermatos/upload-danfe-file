@@ -12,8 +12,8 @@ import org.springframework.http.HttpMethod;
 @EnableEurekaClient
 public class ApiGatewayServerApplication {
 	
-	public static final String NFE_UPLOAD_SERVICE = "http://localhost:9001";
-	public static final String NFE_PROCESS_SERVICE = "http://localhost:9002";
+	public static final String NFE_UPLOAD_SERVICE = "lb://nfe-upload-service";
+	public static final String NFE_PROCESS_SERVICE = "lb://nfe-process-service";
 	
 	@Bean
 	public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
@@ -22,24 +22,24 @@ public class ApiGatewayServerApplication {
 			.route("upload", r -> r.path("/notas-fiscais")
 					.and()
 					.method(HttpMethod.POST)
-					.uri("lb://nfe-upload-service"+"/notas-fiscais"))
+					.uri(NFE_UPLOAD_SERVICE+"/notas-fiscais"))
 			
 			.route("list", r -> r.path("/notas-fiscais")
 					.and()
 					.method(HttpMethod.GET)
-					.uri("lb://nfe-process-service"+"/notas-fiscais"))
+					.uri(NFE_PROCESS_SERVICE+"/notas-fiscais"))
 			
 			.route("duplicates", r -> r.path("/notas-fiscais/{numeroNotaFiscal}/duplicatas")
 					.and()
 					.method(HttpMethod.GET)
 					.filters(f -> f.rewritePath("/(?<numeroNotaFiscal>)/duplicatas", "/${numeroNotaFiscal}"))
-					.uri("lb://nfe-process-service"+"/notas-fiscais"))
+					.uri(NFE_PROCESS_SERVICE+"/notas-fiscais"))
 
 			.route("delete", r -> r.path("/notas-fiscais/{numeroNotaFiscal}")
 					.and()
 					.method(HttpMethod.DELETE)
 					.filters(f -> f.rewritePath("/(?<numeroNotaFiscal>)", "/${numeroNotaFiscal}"))
-					.uri("lb://nfe-process-service"+"/notas-fiscais"))
+					.uri(NFE_PROCESS_SERVICE+"/notas-fiscais"))
 			.build();
 	}
 

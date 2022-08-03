@@ -14,7 +14,7 @@ public class NotaFiscalInput {
 
 	//TODO: Poderia criar validação customizada para limitar o tamanho do arquivo
 	@NotNull
-	@FileContentType(allowed = {MediaType.APPLICATION_XML_VALUE})
+	@FileContentType(allowed = {MediaType.TEXT_XML_VALUE})
 	private MultipartFile xmlNotaFiscal;
 
 	public MultipartFile getXmlNotaFiscal() {
