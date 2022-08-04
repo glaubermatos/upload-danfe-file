@@ -63,20 +63,6 @@ public class UploadNotaFiscalController {
 		}
 	}
 	
-//	@ExceptionHandler(NotaFiscalNaoEncontradaException.class)
-//	public ResponseEntity<Object> handleNotaFiscalNaoEncontradaException(NotaFiscalNaoEncontradaException ex) {
-//		HttpStatus status = HttpStatus.NOT_FOUND;
-//		
-//		Integer statusCode = status.value();
-//		ProblemType type = ProblemType.ENTIDADE_NAO_ENCONTRADA;
-//		String detail = ex.getMessage();
-//		
-//		ApiProblemDetail problem = createParcialProblemDetail(statusCode, type, detail);
-//		problem.setUserMessage(detail);
-//		
-//		return ResponseEntity.status(status).body(problem);
-//	}
-	
 	@ExceptionHandler(BindException.class)
 	public ResponseEntity<Object> handleBindException(BindException ex) {
 		List<ApiProblemDetail.Field> fieldsWithError = getFieldsWithError(ex.getBindingResult());

@@ -1,9 +1,10 @@
 import { ChangeEvent, FormEvent, useState } from "react";
-import { useInvoices } from "../hooks/useInvoices"
 
-export function InvoiceUpload() {
-    const {uploadInvoice} = useInvoices();
+interface InvoiceUploadProps {
+    onUpload: (file: File) => Promise<void>
+}
 
+export function InvoiceUpload({onUpload}: InvoiceUploadProps) {
     const [xmlInvoice, setXmlInvoice] = useState<File>({} as File);
 
     function handleSelectInvoice(event: ChangeEvent<HTMLInputElement>) {
@@ -18,7 +19,8 @@ export function InvoiceUpload() {
     async function handleSubmit(event: FormEvent) {
         event.preventDefault();
 
-        await uploadInvoice(xmlInvoice)
+        onUpload(xmlInvoice)
+        setXmlInvoice({} as File)
     }
 
     return(

@@ -9,9 +9,23 @@ export interface Invoice {
     status: string;
 }
 
-export interface Duplicates {
+export interface Duplicate {
     id: number;
-	installment: number;
-	value: number;
-	expirationDate: string;
+	parcela: number;
+	valor: number;
+	dataVencimento: string;
+}
+
+export interface ApiError {
+    status: string;
+    title: string;
+    detail: string;
+    timestamp: string;
+    userMessage: string;
+    fields: Field[]
+}
+
+interface Field {
+    name: string;
+    userMessage: string;
 }

@@ -1,10 +1,11 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { api } from "../http/api";
-import { Duplicates, Invoice } from "../types";
+import { ApiError, Duplicate, Invoice } from "../types";
 
 interface InvoiceContextData {
     invoices: Invoice[]; 
-    uploadInvoice: (xmlInvoice: File) => void;
+    duplicates: Duplicate[];
+    uploadInvoice: (xmlInvoice: File) => Promise<string>;
     deleteInvoice: (numberInvoice: number) => Promise<void>;
     showDuplicates: (numberInvoice: number) => Promise<void>;
 }
@@ -17,29 +18,34 @@ const InvoicesContext = createContext<InvoiceContextData>({} as InvoiceContextDa
 
 export function InvoiceProvider({children}: InvoiceProviderProps) {
     const [invoices, setInvoices] = useState<Invoice[]>([])
-    const [duplicates, setDuplicates] = useState<Duplicates[]>([])
-    const [invoiceUploadedSuccessfully, setInvoiceUploadedSuccessfully] = useState<boolean>()
+    const [duplicates, setDuplicates] = useState<Duplicate[]>([])
 
     useEffect(() => {
-        api.get<Invoice[]>(`/notas-fiscais`)
-            .then(response => setInvoices(response.data))
-            
+        async function fetchData() {
+            await loadInvoices();
+        }
+
+        fetchData()
     }, [])
 
-    function uploadInvoice (xmlInvoice: File) {
+    async function loadInvoices() {
+        const response = await api.get<Invoice[]>(`/notas-fiscais`)
+
+        setInvoices(response.data)
+    }
+
+    async function uploadInvoice (xmlInvoice: File) {
         const data = new FormData()
         data.append('xmlNotaFiscal', xmlInvoice);
 
-        api.post(`/notas-fiscais`, data, {headers: {
+        const response = await api.post(`/notas-fiscais`, data, {headers: {
             "Content-Type": "multipart/form-data",
-            "Accept": "text/plain;charset=UTF-8"
-        }}).then(response => {
+        }})
 
-            api.get<Invoice[]>(`/notas-fiscais`)
-            .then(response => setInvoices(response.data))
-        })
+        console.log(response.data)
 
-        
+        await loadInvoices()
+        return response.data
     }
 
     async function deleteInvoice(numberInvoice: number) {
@@ -52,7 +58,7 @@ export function InvoiceProvider({children}: InvoiceProviderProps) {
     }
 
     async function showDuplicates(numberInvoice: number) {
-        const response = await api.get<Duplicates[]>(`/notas-fiscais/${numberInvoice}/duplicatas`)
+        const response = await api.get<Duplicate[]>(`/notas-fiscais/${numberInvoice}/duplicatas`)
 
         setDuplicates(response.data)
     }
@@ -60,6 +66,7 @@ export function InvoiceProvider({children}: InvoiceProviderProps) {
     return(
         <InvoicesContext.Provider value={{
             invoices,
+            duplicates,
             uploadInvoice,
             deleteInvoice,
             showDuplicates
