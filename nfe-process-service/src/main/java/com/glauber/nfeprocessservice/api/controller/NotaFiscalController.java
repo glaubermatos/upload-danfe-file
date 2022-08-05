@@ -21,6 +21,7 @@ import com.glauber.nfeprocessservice.api.model.NotaFiscalModel;
 import com.glauber.nfeprocessservice.api.model.assembler.DuplicataModelAssembler;
 import com.glauber.nfeprocessservice.api.model.assembler.NotaFiscalModelAssembler;
 import com.glauber.nfeprocessservice.domain.exception.EntidadeNaoEncontradaException;
+import com.glauber.nfeprocessservice.domain.exception.NotaFiscalJaCadastradaException;
 import com.glauber.nfeprocessservice.domain.repository.NotaFiscalRepository;
 import com.glauber.nfeprocessservice.domain.service.NotaFiscalRegistrationService;
 
@@ -61,6 +62,20 @@ public class NotaFiscalController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable int numeroNotaFiscal) {
 		notaFiscalRegistrationService.remover(numeroNotaFiscal);
+	}
+	
+	@ExceptionHandler(NotaFiscalJaCadastradaException.class)
+	public ResponseEntity<Object> handleNotaFiscalNaoEncontradaException(NotaFiscalJaCadastradaException ex) {
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		
+		Integer statusCode = status.value();
+		ProblemType type = ProblemType.REGRA_DE_NEGOCIO_VIOLADA;
+		String detail = ex.getMessage();
+		
+		ApiProblemDetail problem = createParcialProblemDetail(statusCode, type, detail);
+		problem.setUserMessage(detail);
+		
+		return ResponseEntity.status(status).body(problem);
 	}
 	
 	@ExceptionHandler(EntidadeNaoEncontradaException.class)

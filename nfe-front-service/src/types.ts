@@ -15,17 +15,3 @@ export interface Duplicate {
 	valor: number;
 	dataVencimento: string;
 }
-
-export interface ApiError {
-    status: string;
-    title: string;
-    detail: string;
-    timestamp: string;
-    userMessage: string;
-    fields: Field[]
-}
-
-interface Field {
-    name: string;
-    userMessage: string;
-}

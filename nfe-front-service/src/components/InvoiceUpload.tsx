@@ -1,32 +1,32 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import React from "react";
+import { Toolbar } from 'primereact/toolbar';
+import { FileUpload, FileUploadHandlerParam } from "primereact/fileupload";
 
 interface InvoiceUploadProps {
     onUpload: (file: File) => Promise<void>
 }
 
 export function InvoiceUpload({onUpload}: InvoiceUploadProps) {
-    const [xmlInvoice, setXmlInvoice] = useState<File>({} as File);
 
-    function handleSelectInvoice(event: ChangeEvent<HTMLInputElement>) {
-        if (!event.target.files) {
-            return
-        }
-
-        const selectedXmlInvoice = event.target.files[0]
-        setXmlInvoice(selectedXmlInvoice)
+    async function handleUploadFile(event: FileUploadHandlerParam) {
+        onUpload(event.files[0])
+        event.options.clear();
     }
 
-    async function handleSubmit(event: FormEvent) {
-        event.preventDefault();
-
-        onUpload(xmlInvoice)
-        setXmlInvoice({} as File)
-    }
+    const rightContents = (
+        <React.Fragment>
+            <FileUpload
+            name="xmlNotaFiscal"
+            chooseLabel="Upload"
+            url="/notas-fiscais" 
+            mode="basic"
+            // accept="text/xml"
+            // auto
+            customUpload uploadHandler={((e) => handleUploadFile(e))} />
+        </React.Fragment>
+    );
 
     return(
-        <form onSubmit={handleSubmit}>
-            <input type={"file"} onChange={handleSelectInvoice} id="xmlNotaFiscal" />
-            <button type="submit">Enviar</button>
-        </form>
+        <Toolbar right={rightContents} />
     )
 }

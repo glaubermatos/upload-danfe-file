@@ -1,13 +1,12 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { api } from "../http/api";
-import { ApiError, Duplicate, Invoice } from "../types";
+import { Duplicate, Invoice } from "../types";
 
 interface InvoiceContextData {
     invoices: Invoice[]; 
-    duplicates: Duplicate[];
     uploadInvoice: (xmlInvoice: File) => Promise<string>;
     deleteInvoice: (numberInvoice: number) => Promise<void>;
-    showDuplicates: (numberInvoice: number) => Promise<void>;
+    getDuplicates: (numberInvoice: number) => Promise<Duplicate[]>;
 }
 
 interface InvoiceProviderProps {
@@ -18,7 +17,6 @@ const InvoicesContext = createContext<InvoiceContextData>({} as InvoiceContextDa
 
 export function InvoiceProvider({children}: InvoiceProviderProps) {
     const [invoices, setInvoices] = useState<Invoice[]>([])
-    const [duplicates, setDuplicates] = useState<Duplicate[]>([])
 
     useEffect(() => {
         async function fetchData() {
@@ -57,19 +55,18 @@ export function InvoiceProvider({children}: InvoiceProviderProps) {
         setInvoices(invoicesUpdate)
     }
 
-    async function showDuplicates(numberInvoice: number) {
+    async function getDuplicates(numberInvoice: number) {
         const response = await api.get<Duplicate[]>(`/notas-fiscais/${numberInvoice}/duplicatas`)
 
-        setDuplicates(response.data)
+        return response.data
     }
 
     return(
         <InvoicesContext.Provider value={{
             invoices,
-            duplicates,
             uploadInvoice,
             deleteInvoice,
-            showDuplicates
+            getDuplicates
         }}>
             {children}
         </InvoicesContext.Provider>
