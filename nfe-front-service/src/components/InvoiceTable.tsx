@@ -25,6 +25,10 @@ export function InvoiceTable({ onRemoveInvoice }: InvoiceTableProps) {
             message: `Remover Nota Fiscal nº ${invoice.numero}`,
             header: 'Confirmar exclusão',
             icon: 'pi pi-exclamation-triangle',
+            acceptLabel: 'Remover',
+            acceptClassName: 'p-button-danger',
+            rejectLabel: 'Cancelar',
+            rejectClassName: 'p-button-outlined p-button-secondary',
             accept: () => onRemoveInvoice(invoice.numero),
             reject: () => {}
         });

@@ -51,7 +51,7 @@ export function Home() {
                     <h2>NFe upload service</h2>
                 </div>
             </header>
-            <main>
+            <main>                
                 <Messages ref={messages}></Messages>
                 <InvoiceUpload onUpload={handleUploadFile} />
                 <InvoiceTable onRemoveInvoice={handleRemoveInvoice} />
