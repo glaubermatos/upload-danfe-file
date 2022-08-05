@@ -141,7 +141,9 @@ git clone https://github.com/glaubermatos/upload-danfe-file.git
 Entre na pasta raiz do projeto e certifique-se que o arquivo docker-compose.yml esta presente e rode o comando docker-compose up, isso será o suficiente para que os serviços inicializem.
 
 * Credenciais de acesso ao RabbitMQ
+
 <br />
+
     - username: rabbitmq
     - password: rabbitmq
 
