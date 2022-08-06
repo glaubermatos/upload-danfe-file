@@ -42,6 +42,14 @@ A proposta do projeto é ser desenvolvido seguindo modelo arquitetural de micros
 - **nfe-process-service**: Aplicação responsável por processar os arquivos;
 - **nfe-front-service**: aplicação responsável por apresentar a interface com o usuário.
 
+Ficou curioso! visualize a demonstração:
+
+<a align="center" href="https://www.linkedin.com/feed/update/urn:li:activity:6961484648367439872/">
+    <img alt="post linkedin" src="https://img.shields.io/static/v1?label=post linkedin&message=upload-danfe-file&color=3b82f6&style=flat&logo=linkedin">
+</a>
+
+<br />
+
 ### Diagrama de classes
 
 <br />
